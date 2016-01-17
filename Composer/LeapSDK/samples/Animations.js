@@ -91,7 +91,7 @@
       }
       around+= 0.1;
       ctx.beginPath();
-      ctx.lineWidth = 10;
+      ctx.lineWidth = 3;
       ctx.arc(w*.5, h*.4, Math.min(w*.1,h*.1), 0, around);
       ctx.stroke();
     }
@@ -140,7 +140,7 @@
         return;
       }
       ctx.beginPath();
-      ctx.lineWidth = 10;
+      ctx.lineWidth = 3;
       ctx.arc(w*.5, h*.4, radius, 0, 2*Math.PI);
       ctx.stroke();
     }
