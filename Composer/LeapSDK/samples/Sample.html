@@ -20,6 +20,7 @@ See additional libraries, guides, and examples at:
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Leap Motion JavaScript Sample</title>
+  <style> html{ overflow-y: hidden; overflow-x: hidden;} </style>
   <script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
   <script>
 // Store frame for motion functions
@@ -333,7 +334,7 @@ function pauseForGestures() {
 </head>
 <body>
   <h1>Conductor</h1>
-  <h2>Game Screen</h2>
+  <!-- <h2>Game Screen</h2> -->
   <canvas id="canvas"></canvas>
   <script>
   var canvas = document.getElementById("canvas");
@@ -359,13 +360,18 @@ function pauseForGestures() {
     ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
   })
 
-  down();
+  var animations = [down,up,circlecw,circleccw,checkright,checkleft,tap];
+  function loop() {
+    var rand = Math.ceil(Math.random()*(animations.length-1));
+    animations[rand]();
+  }
+  var looper = setInterval(loop, 1000);
 
   // MOVE 1
   function down(){
     var down = 0;
     function add(){
-      down ++;
+      down+=10;
       if (down > h*.7){
         ctx.fillStyle= '#000000';
         ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
@@ -384,7 +390,7 @@ function pauseForGestures() {
   function up(){
     var up = 0;
     function add(){
-      up ++;
+      up+=10;
       if (up > h*.7){
         ctx.fillStyle= '#000000';
         ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
@@ -448,8 +454,8 @@ function pauseForGestures() {
     ctx.fillStyle='#0000FF';
     function increment(){
       if(x < w/2) {
-        x += 1.5;
-        y += 1;
+        x += 3;
+        y += 2;
       }
       else if (x > w/2){
         if(x > w*.825) {
@@ -458,8 +464,8 @@ function pauseForGestures() {
           clearInterval(id);
           return;
         }
-        x += 1.5;
-        y -= 2;
+        x += 3;
+        y -= 4;
       }
       ctx.fillRect(x, h*.45 + y, w*.01, h*.01);
     }
@@ -473,8 +479,8 @@ function pauseForGestures() {
     ctx.fillStyle='#0000FF';
     function increment(){
       if(x > w/2) {
-        x -= 1.5;
-        y += 1;
+        x -= 3;
+        y += 2;
       }
       else if (x < w/2){
         if(x < w*.125) {
@@ -483,8 +489,8 @@ function pauseForGestures() {
           clearInterval(id);
           return;
         }
-        x -= 1.5;
-        y -= 2;
+        x -= 3;
+        y -= 4;
       }
       ctx.fillRect(x, h*.45 + y, w*.01, h*.01);
     }
@@ -520,6 +526,7 @@ function pauseForGestures() {
   }
 
   </script>
+  <!--
   <div id="main">
     <button id="pause" onclick="togglePause()">Pause</button>
     <input type="checkbox" id="pauseOnGesture" onclick="pauseForGestures()">Pause on gesture</input>
@@ -535,5 +542,6 @@ function pauseForGestures() {
     <h3>Gesture data:</h3>
     <div id="gestureData"></div>
   </div>
+  --!>
 </body>
 </html>
