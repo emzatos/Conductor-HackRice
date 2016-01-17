@@ -25,6 +25,9 @@ See additional libraries, guides, and examples at:
     #score{display: inline-block; padding-left : 25px;}
   </style>
   <script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
+<<<<<<< HEAD
+  <script src="Sample.js"></script>
+=======
   <script>
 // Store frame for motion functions
 var previousFrame = null;
@@ -334,6 +337,7 @@ function pauseForGestures() {
   }
 }
 </script>
+>>>>>>> fa389801dda24c12e658785a4442a55adf1d65c8
 </head>
 <body>
   <h1>Conductor</h1>
@@ -564,19 +568,9 @@ function pauseForGestures() {
   </script>
   <!--
   <div id="main">
-    <button id="pause" onclick="togglePause()">Pause</button>
-    <input type="checkbox" id="pauseOnGesture" onclick="pauseForGestures()">Pause on gesture</input>
-    <h3>Frame data:</h3>
-    <div id="frameData"></div>
+    <h3>Current Motion:</h3>
+    <input id="currentMotion" value="3"/>
     <div style="clear:both;"></div>
-    <h3>Hand data:</h3>
-    <div id="handData"></div>
-    <div style="clear:both;"></div>
-    <h3>Finger and tool data:</h3>
-    <div id="pointableData"></div>
-    <div style="clear:both;"></div>
-    <h3>Gesture data:</h3>
-    <div id="gestureData"></div>
   </div>
   -->
 </body>
