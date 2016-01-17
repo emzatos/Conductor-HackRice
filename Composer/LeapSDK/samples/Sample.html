@@ -334,6 +334,7 @@ function pauseForGestures() {
 </head>
 <body>
   <h1>Conductor</h1>
+  <button onclick="play()">Play</button>
   <!-- <h2>Game Screen</h2> -->
   <canvas id="canvas"></canvas>
   <script>
@@ -360,12 +361,23 @@ function pauseForGestures() {
     ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
   })
 
+  var audio = new Audio('sample-audio.wav');
+  var looper;
   var animations = [down,up,circlecw,circleccw,checkright,checkleft,tap];
   function loop() {
+    ctx.fillStyle= '#000000';
+    ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
     var rand = Math.ceil(Math.random()*(animations.length-1));
     animations[rand]();
   }
-  var looper = setInterval(loop, 1000);
+
+  function play() {
+    audio.load();
+    audio.play();
+    clearInterval(looper);
+    loop();
+    looper = setInterval(loop, 1000*60/76);
+  }
 
   // MOVE 1
   function down(){
@@ -447,6 +459,7 @@ function pauseForGestures() {
     var id = setInterval(round, 10);
   }
 
+  var speedScale = 2;
   // MOVE 3
   function checkright(){
     var x = w*.15;
@@ -454,8 +467,8 @@ function pauseForGestures() {
     ctx.fillStyle='#0000FF';
     function increment(){
       if(x < w/2) {
-        x += 3;
-        y += 2;
+        x += 3*speedScale;
+        y += 2*speedScale;
       }
       else if (x > w/2){
         if(x > w*.825) {
@@ -464,8 +477,8 @@ function pauseForGestures() {
           clearInterval(id);
           return;
         }
-        x += 3;
-        y -= 4;
+        x += 3*speedScale;
+        y -= 4*speedScale;
       }
       ctx.fillRect(x, h*.45 + y, w*.01, h*.01);
     }
@@ -479,8 +492,8 @@ function pauseForGestures() {
     ctx.fillStyle='#0000FF';
     function increment(){
       if(x > w/2) {
-        x -= 3;
-        y += 2;
+        x -= 3*speedScale;
+        y += 2*speedScale;
       }
       else if (x < w/2){
         if(x < w*.125) {
@@ -489,8 +502,8 @@ function pauseForGestures() {
           clearInterval(id);
           return;
         }
-        x -= 3;
-        y -= 4;
+        x -= 3*speedScale;
+        y -= 4*speedScale;
       }
       ctx.fillRect(x, h*.45 + y, w*.01, h*.01);
     }
@@ -506,10 +519,10 @@ function pauseForGestures() {
       if(radius < Math.min(w*.15,h*.15))
         radius+=10;
       else {
-        clearInterval(id);
-        clearInterval(ip);
         ctx.fillStyle= '#000000';
         ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+        clearInterval(id);
+        clearInterval(ip);
         return;
       }
       ctx.beginPath();
