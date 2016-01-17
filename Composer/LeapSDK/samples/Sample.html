@@ -336,143 +336,188 @@ function pauseForGestures() {
   <h2>Game Screen</h2>
   <canvas id="canvas"></canvas>
   <script>
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
 
-var w = window.innerWidth;
-var h = window.innerHeight;
-
-canvas.width = w;
-canvas.height = h;
-
-ctx.fillStyle = '#000000';
-ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
-
-window.addEventListener('resize', function() {
-  ctx.clearRect(0,0,w,h);
-  w = window.innerWidth;
-  h = window.innerHeight;
+  var w = window.innerWidth;
+  var h = window.innerHeight;
 
   canvas.width = w;
   canvas.height = h;
 
+  ctx.fillStyle = '#000000';
   ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
-})
 
-function down(){
-  var down = 0;
-  function add(){
-    down ++;
-    if (down > h*.7){
-      ctx.fillStyle= '#000000';
-      ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
-      clearInterval(id);
-      return;
-    }
-  ctx.fillStyle= '#000000';
-  ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
-  ctx.fillStyle = '#0000FF';
-  ctx.fillRect(w*.45,h*0.05 + down,w*.1,h*.1);
-  } 
-  var id = setInterval(add, 10);
-}
-function up(){
-  var up = 0;
-  function add(){
-    up ++;
-    if (up > h*.7){
-      ctx.fillStyle= '#000000';
-      ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
-      clearInterval(id);
-      return;
-    }
-  ctx.fillStyle= '#000000';
-  ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
-  ctx.fillStyle = '#0000FF';
-  ctx.fillRect(w*.45,h*0.75 - up,w*.1,h*.1);
-  } 
-  var id = setInterval(add, 10);
-}
-function circlecw(){
-  var around = 0;
-  ctx.strokeStyle= '#0000FF';
-  ctx.fill();
-  function round() {
-    if(around > 2*Math.PI) {
-      ctx.fillStyle= '#000000';
-      ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
-      clearInterval(id);
-      return;
-    }
-    around+= 0.1;
-    ctx.beginPath();
-    ctx.lineWidth = 10;
-    ctx.arc(w*.5, h*.45, Math.min(w*.1,h*.1), 0, around);
-    ctx.stroke();
-  }
-  var id = setInterval(round, 10);
-}
-function circleccw(){
-  var around = 0;
-  ctx.strokeStyle= '#0000FF';
-  ctx.fill();
-  function round() {
-    if(around < -2*Math.PI) {
-      ctx.fillStyle= '#000000';
-      ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
-      clearInterval(id);
-      return;
-    }
-    around-= 0.1;
-    ctx.beginPath();
-    ctx.lineWidth = 10;
-    ctx.arc(w*.5, h*.45, Math.min(w*.1,h*.1), 2*Math.PI + around, 0);
-    ctx.stroke();
-  }
-  var id = setInterval(round, 10);
-}
-function checkright(){
-  ctx.strokeStyle='#0000FF';
-  ctx.beginPath();
-  ctx.lineWidth = 10;
-  ctx.moveTo(w*.1,h*.45);
-  ctx.lineTo(w*.35,h*.8);
-  ctx.lineTo(w*.85,h*.25);
-  ctx.stroke();
-}
+  window.addEventListener('resize', function() {
+    ctx.clearRect(0,0,w,h);
+    w = window.innerWidth;
+    h = window.innerHeight;
 
-function tap() {
-  ctx.strokeStyle= '#0000FF';
-  ctx.fill();
-  var radius = 0;
-  function ring() {
-    if(radius < Math.min(w*.15,h*.15))
-      radius+=10;
-    else {
-      clearInterval(id);
-      clearInterval(ip);
-      ctx.fillStyle= '#000000';
-      ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
-      return;
-    }
-    ctx.beginPath();
-    ctx.lineWidth = 10;
-    ctx.arc(w*.5, h*.45, radius, 0, 2*Math.PI);
-    ctx.stroke();
-  }
-  function erase() {
-    ctx.fillStyle='black';
+    canvas.width = w;
+    canvas.height = h;
+
     ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+  })
+
+  down();
+
+  // MOVE 1
+  function down(){
+    var down = 0;
+    function add(){
+      down ++;
+      if (down > h*.7){
+        ctx.fillStyle= '#000000';
+        ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+        clearInterval(id);
+        return;
+      }
+    ctx.fillStyle= '#000000';
+    ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+    ctx.fillStyle = '#0000FF';
+    ctx.fillRect(w*.45,h*0.05 + down,w*.1,h*.1);
+    } 
+    var id = setInterval(add, 10);
   }
-  var id = setInterval(ring, 50);
-  var ip = setInterval(erase, 100);
-}
-//tap();
-//checkright();
-//circleccw();
-//circlecw();
-//up();
-//down();
+
+  // MOVE 1 REVERSED
+  function up(){
+    var up = 0;
+    function add(){
+      up ++;
+      if (up > h*.7){
+        ctx.fillStyle= '#000000';
+        ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+        clearInterval(id);
+        return;
+      }
+    ctx.fillStyle= '#000000';
+    ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+    ctx.fillStyle = '#0000FF';
+    ctx.fillRect(w*.45,h*0.75 - up,w*.1,h*.1);
+    } 
+    var id = setInterval(add, 10);
+  }
+
+  // MOVE 2
+  function circlecw(){
+    var around = 0;
+    ctx.strokeStyle= '#0000FF';
+    ctx.fill();
+    function round() {
+      if(around > 2*Math.PI) {
+        ctx.fillStyle= '#000000';
+        ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+        clearInterval(id);
+        return;
+      }
+      around+= 0.1;
+      ctx.beginPath();
+      ctx.lineWidth = 10;
+      ctx.arc(w*.5, h*.45, Math.min(w*.1,h*.1), 0, around);
+      ctx.stroke();
+    }
+    var id = setInterval(round, 10);
+  }
+
+  // MOVE 2 REVERSED
+  function circleccw(){
+    var around = 0;
+    ctx.strokeStyle= '#0000FF';
+    ctx.fill();
+    function round() {
+      if(around < -2*Math.PI) {
+        ctx.fillStyle= '#000000';
+        ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+        clearInterval(id);
+        return;
+      }
+      around-= 0.1;
+      ctx.beginPath();
+      ctx.lineWidth = 10;
+      ctx.arc(w*.5, h*.45, Math.min(w*.1,h*.1), 2*Math.PI + around, 0);
+      ctx.stroke();
+    }
+    var id = setInterval(round, 10);
+  }
+
+  // MOVE 3
+  function checkright(){
+    var x = w*.15;
+    var y = 0;
+    ctx.fillStyle='#0000FF';
+    function increment(){
+      if(x < w/2) {
+        x += 1.5;
+        y += 1;
+      }
+      else if (x > w/2){
+        if(x > w*.825) {
+          ctx.fillStyle= '#000000';
+          ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+          clearInterval(id);
+          return;
+        }
+        x += 1.5;
+        y -= 2;
+      }
+      ctx.fillRect(x, h*.45 + y, w*.01, h*.01);
+    }
+    var id = setInterval(increment, 5);
+  }
+
+  // MOVE 3 REVERSED
+  function checkleft() {
+    var x = w*.825;
+    var y = 0;
+    ctx.fillStyle='#0000FF';
+    function increment(){
+      if(x > w/2) {
+        x -= 1.5;
+        y += 1;
+      }
+      else if (x < w/2){
+        if(x < w*.125) {
+          ctx.fillStyle= '#000000';
+          ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+          clearInterval(id);
+          return;
+        }
+        x -= 1.5;
+        y -= 2;
+      }
+      ctx.fillRect(x, h*.45 + y, w*.01, h*.01);
+    }
+    var id = setInterval(increment, 5);
+  }
+
+  // MOVE 4 and MOVE 4 REVERSED
+  function tap() {
+    ctx.strokeStyle= '#0000FF';
+    ctx.fill();
+    var radius = 0;
+    function ring() {
+      if(radius < Math.min(w*.15,h*.15))
+        radius+=10;
+      else {
+        clearInterval(id);
+        clearInterval(ip);
+        ctx.fillStyle= '#000000';
+        ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+        return;
+      }
+      ctx.beginPath();
+      ctx.lineWidth = 10;
+      ctx.arc(w*.5, h*.45, radius, 0, 2*Math.PI);
+      ctx.stroke();
+    }
+    function erase() {
+      ctx.fillStyle='black';
+      ctx.fillRect(w*.1,h*.05,w*.8,h*.8);
+    }
+    var id = setInterval(ring, 50);
+    var ip = setInterval(erase, 100);
+  }
 
   </script>
   <div id="main">
