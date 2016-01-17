@@ -39,8 +39,8 @@ var firstMove = new Map();
 firstMove.set("top", false);
 firstMove.set("bottom", false);
 //first point
-var FIRST_X_MIN = 30
-var FIRST_X_MAX = 40
+var FIRST_X_MIN = -70
+var FIRST_X_MAX = 100
 
 var FIRST_Y_TOP_MIN = 220
 var FIRST_Y_TOP_MAX = 260
@@ -55,32 +55,36 @@ var numTimesSecond = 0;
 //THIRD MOTION
 
 //first point
-var THIRD_X_TOP_LEFT_MIN = -55
+var THIRD_X_TOP_LEFT_MIN = -135
 var THIRD_X_TOP_LEFT_MAX = -35
 
-var THIRD_Y_TOP_LEFT_MIN = 165
+var THIRD_Y_TOP_LEFT_MIN = 115
 var THIRD_Y_TOP_LEFT_MAX = 205
 
 
 
 //second point
-var THIRD_X_BOTTOM_MIN = 20
+var THIRD_X_BOTTOM_MIN = -50
 var THIRD_X_BOTTOM_MAX = 50
 
 var THIRD_Y_BOTTOM_MIN = 50
 var THIRD_Y_BOTTOM_MAX = 80
 
 //third point
-var THIRD_X_TOP_RIGHT_MIN = 85
-var THIRD_X_TOP_RIGHT_MAX = 105
+var THIRD_X_TOP_RIGHT_MIN = 35
+var THIRD_X_TOP_RIGHT_MAX = 135
 
-var THIRD_Y_TOP_RIGHT_MIN = 175
-var THIRD_Y_TOP_RIGHT_MAX = 195
+var THIRD_Y_TOP_RIGHT_MIN = 115
+var THIRD_Y_TOP_RIGHT_MAX = 205
 
 var thirdMove = new Map();
 thirdMove.set("topl", false);
 thirdMove.set("bottom", false);
 thirdMove.set("topr", false);
+
+//fourh point
+var fourthMotion = false;
+var numTimesFourth = 0;
 
 
 
@@ -131,6 +135,11 @@ Leap.loop(controllerOptions, function(frame) {
     thirdMove.set("topl", false);
     thirdMove.set("topr", false);
     thirdMove.set("bottom", false);
+  }
+  //MOVE 4
+  if(fourthMotion){
+    console.log("YOU did move 4 " + numTimesFourth);
+    fourthMotion = false;
   }
 
 
@@ -220,6 +229,24 @@ Leap.loop(controllerOptions, function(frame) {
     console.log("TOP RIGHT MET");
     thirdMove.set("topr", true)
   }
+
+  //FOURTH MOVE
+  if(frame.valid && frame.gestures.length > 0 && hasBegun){
+      frame.gestures.forEach(function(gesture){
+        if(gesture.type == "screenTap" || gesture.type == "keyTap"){
+
+          
+            fourthMotion = true;
+            numTimesFourth+=1;
+
+          
+        }
+        
+      }
+      );
+    }
+
+  //FORMATTING
 
   handString += "Hand ID: " + hand.id + "<br />";
   handString += "Type: " + hand.type + " hand" + "<br />";
