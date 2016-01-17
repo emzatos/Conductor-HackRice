@@ -1,10 +1,11 @@
-
+ 
 //create functions for generating movement
 
 
 // Store frame for motion functions
-
-
+document.body.style.background='black';
+var score=0;
+var currentMotion = 1;
 var previousFrame = null;
 var paused = false;
 var pauseOnGesture = false;
@@ -90,7 +91,7 @@ Leap.loop(controllerOptions, function(frame) {
     console.log("YOU did move 1");
     firstMove.set("top", false);
     firstMove.set("bottom", false);
-    if(document.getElementById("currentMotion").value == 1){
+    if(currentMotion == 1){
       newOne();
     }
   }
@@ -99,7 +100,7 @@ Leap.loop(controllerOptions, function(frame) {
   if(secondMove){
     console.log("YOU did move 2 " + numTimesSecond);
     secondMove = false;
-    if(document.getElementById("currentMotion").value == 2){
+    if(currentMotion == 2){
       newOne();
     }
   }
@@ -110,7 +111,7 @@ Leap.loop(controllerOptions, function(frame) {
     thirdMove.set("topl", false);
     thirdMove.set("topr", false);
     thirdMove.set("bottom", false);
-    if(document.getElementById("currentMotion").value == 3){
+    if(currentMotion == 3){
       newOne();
     }
   }
@@ -118,7 +119,7 @@ Leap.loop(controllerOptions, function(frame) {
   if(fourthMotion){
     console.log("YOU did move 4 " + numTimesFourth);
     fourthMotion = false;
-    if(document.getElementById("currentMotion").value == 4){
+    if(currentMotion == 4){
       newOne();
     }
   }
@@ -225,8 +226,172 @@ thirdMove.set("topr", true)
 }
 });
 
+
 function newOne(){
-  document.getElementById("currentMotion").value = Math.floor((Math.random() * 4) + 1);
+  score+=1;
 
 }
 
+
+ 
+
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+
+  canvas.width = w;
+  canvas.height = h;
+
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(w*.0,0,w*.95,h*.95);
+
+
+  window.addEventListener('resize', function() {
+    ctx.clearRect(0,0,w,h);
+    w = window.innerWidth;
+    h = window.innerHeight;
+
+    canvas.width = w;
+    canvas.height = h;
+
+    ctx.fillRect(0,0,w,h);
+  })
+  ctx.font = 'bold 60px Raleway'
+  var audio = new Audio('sample-audio1.wav');
+  var looper;
+  var animations = [down,circle,check,tap];
+  var counter = 0;
+  function loop() {
+    if(counter < 180) {
+      
+      ctx.fillStyle= '#000000';
+      ctx.strokeStyle='black';
+      ctx.fillRect(0,0,w,h);
+      ctx.font = 'bold 60px Raleway'
+      ctx.fillStyle = "white"
+      ctx.font = 'bold 60px Raleway'
+      
+      
+      ctx.fillText(score, 32.5, 70.5);
+      var rand = Math.floor(Math.random()*animations.length);
+      currentMotion= rand+1;
+      animations[rand]();
+      counter++;
+    } else {
+      clearInterval(looper);
+      audio.pause();
+      counter = 0;
+
+    }
+  }
+
+  play();
+
+  function play() {
+    audio.load();
+    audio.play();
+    clearInterval(looper);
+    counter = 0;
+    num = 0;
+    
+    loop();
+    looper = setInterval(loop, 1000*60/61);
+  }
+
+  // MOVE 1
+  function down(){
+    var down = 0;
+    function add(){
+      down+=10;
+      if (down > h*.7){
+        ctx.fillStyle= '#000000';
+        ctx.fillRect(w*.1,0,w*.8,h*.8);
+        clearInterval(id);
+        return;
+      }
+    ctx.fillStyle= '#000000';
+    ctx.fillRect(w*.1,0,w*.8,h*.8);
+    ctx.fillStyle = '#0000FF';
+    ctx.fillRect(w*.45, down,w*.1,h*.1);
+    } 
+    var id = setInterval(add, 10);
+  }
+
+  // MOVE 2
+  function circle(){
+    var around = 0;
+    ctx.fillStyle= '#000000';
+    ctx.strokeStyle= '#0000FF';
+    //ctx.fill();
+    function round() {
+      if(around > 2*Math.PI) {
+        ctx.fillStyle= '#000000';
+        ctx.fillRect(w*.1,0,w*.8,h*.8);
+        clearInterval(id);
+        return;
+      }
+      around+= 0.1;
+      ctx.beginPath();
+      ctx.lineWidth = 3;
+      ctx.arc(w*.5, h*.4, Math.min(w*.1,h*.1), 0, around);
+      ctx.stroke();
+    }
+    var id = setInterval(round, 10);
+  }
+
+  var speedScale = 2;
+  // MOVE 3
+  function check(){
+    var x = w*.15;
+    var y = 0;
+    ctx.fillStyle='#0000FF';
+    function increment(){
+      if(x < w/2) {
+        x += 3*speedScale;
+        y += 2*speedScale;
+      }
+      else if (x > w/2){
+        if(x > w*.825) {
+          ctx.fillStyle= '#000000';
+          ctx.fillRect(w*.1,0,w*.8,h*.8);
+          clearInterval(id);
+          return;
+        }
+        x += 3*speedScale;
+        y -= 2*speedScale;
+      }
+      ctx.fillRect(x, h*.3 + y, w*.01, h*.01);
+    }
+    var id = setInterval(increment, 5);
+  }
+
+  // MOVE 4
+  function tap() {
+    ctx.fillStyle= '#000000';
+    ctx.strokeStyle= '#0000FF';
+    //ctx.fill();
+    var radius = 0;
+    function ring() {
+      if(radius < Math.min(w*.15,h*.15))
+        radius+=10;
+      else {
+        ctx.fillStyle= '#000000';
+        ctx.fillRect(w*.1,0,w*.8,h*.8);
+        clearInterval(id);
+        clearInterval(ip);
+        return;
+      }
+      ctx.beginPath();
+      ctx.lineWidth = 3;
+      ctx.arc(w*.5, h*.4, radius, 0, 2*Math.PI);
+      ctx.stroke();
+    }
+    function erase() {
+      ctx.fillStyle='black';
+      ctx.fillRect(w*.1,0,w*.8,h*.8);
+    }
+    var id = setInterval(ring, 50);
+    var ip = setInterval(erase, 100);
+  }
