@@ -39,7 +39,8 @@ var firstMove = new Map();
 firstMove.set("top", false);
 firstMove.set("bottom", false);
 //first point
-var FIRST_X_MIN = 
+var FIRST_X_MIN = 30
+var FIRST_X_MAX = 40
 
 var FIRST_Y_TOP_MIN = 220
 var FIRST_Y_TOP_MAX = 260
@@ -59,6 +60,8 @@ var THIRD_X_TOP_LEFT_MAX = -35
 
 var THIRD_Y_TOP_LEFT_MIN = 165
 var THIRD_Y_TOP_LEFT_MAX = 205
+
+
 
 //second point
 var THIRD_X_BOTTOM_MIN = 20
@@ -173,7 +176,7 @@ Leap.loop(controllerOptions, function(frame) {
       hasBegun = true;
     } 
     //FIRST MOTION
-    if(!firstMove.get("bottom") && hasBegun && !firstMove.get("top") && hand.palmPosition[1]  > FIRST_Y_TOP_MIN && hand.palmPosition[1] < FIRST_Y_TOP_MAX){
+    if(!firstMove.get("bottom") && hasBegun && !firstMove.get("top") && hand.palmPosition[1]  > FIRST_Y_TOP_MIN && hand.palmPosition[1] < FIRST_Y_TOP_MAX && hand.palmPosition[0] > FIRST_X_MIN && hand.palmPosition[0] < FIRST_X_MAX){
       console.log("TOP MET");
       firstMove.set("top", true)
     }
