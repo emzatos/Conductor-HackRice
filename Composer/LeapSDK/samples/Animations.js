@@ -28,7 +28,7 @@
     ctx.fillRect(w*.1,0,w*.8,h*.8);
   })
 
-  var audio = new Audio('sample-audio.mp3');
+  var audio = new Audio('sample-audio1.wav');
   var looper;
   var animations = [down,up,circlecw,circleccw,checkright,checkleft,tap];
   var counter = 0;
@@ -55,7 +55,7 @@
     num = 0;
     document.getElementById("score").innerHTML = "Score: 0/60";
     loop();
-    looper = setInterval(loop, 2000*60/76);
+    looper = setInterval(loop, 2000*60/61);
   }
 
   // MOVE 1
